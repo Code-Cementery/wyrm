@@ -1,5 +1,6 @@
 ﻿using c302;
 using System;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -12,8 +13,11 @@ public class CElegansBodyHelper : MonoBehaviour
     public float vMuscleOffset = 7f;
     public float dMuscleOffset = 14f;
     public float muscleVerticalOffset = 10f;
+    public float maxMuscleCharge = 10f;
+    public Vector3 muscleScale = Vector3.one;
 
-    public GameObject musclePrefab;
+    Dictionary<string, Renderer> muscles;
+
 
     public Connectome conn;
     MaterialPropertyBlock propBlock;
@@ -23,23 +27,30 @@ public class CElegansBodyHelper : MonoBehaviour
     void Start()
     {
         conn = GetComponent<CElegans>().conn;
+        muscles = new Dictionary<string, Renderer>();
         propBlock = new MaterialPropertyBlock();
 
         SetupMuscles();
     }
 
     /// GameMessage
-    void __Simulation(Connectome conn)
+    private void FixedUpdate()
     {
-        // @TODO:  later: solve within update?
+        foreach (var muscle in conn.GetMuscleCharges())
+        {
+            var _render = muscles[muscle.MuscleName];
 
+            var val = Mathf.Clamp(muscle.CurrentCharge, 0, maxMuscleCharge);
 
-        //_render.GetPropertyBlock(propBlock, 0);
-        //propBlock.SetTexture(_TEX, texture);
-        //_render.SetPropertyBlock(propBlock, 0);
+            Color col = new Color(val / maxMuscleCharge, 0, 0);
+
+            _render.GetPropertyBlock(propBlock, 0);
+            propBlock.SetColor(_COL, col);
+            _render.SetPropertyBlock(propBlock, 0);
+        }
     }
 
-    
+
     // @TODO: tochable cylinder for senses?
 
     void SetupMuscles()
@@ -61,6 +72,9 @@ public class CElegansBodyHelper : MonoBehaviour
             pos.x = (m.MuscleId - 7) * muscleVerticalOffset;
 
             child.localPosition = pos;
+            child.localScale = muscleScale;
+
+            muscles[child.name] = child.GetComponent<Renderer>();
         }
     }
 
@@ -74,7 +88,8 @@ public class CElegansBodyHelper : MonoBehaviour
         {
             if (!mWrapper.Find(m.MuscleName))
             {
-                var obj = PrefabUtility.InstantiatePrefab(musclePrefab, mWrapper);
+                var obj = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                obj.transform.SetParent(mWrapper, false);
                 obj.name = m.MuscleName;
             }
         }

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using UnityEngine;
 
 namespace c302
 {
@@ -8,7 +8,9 @@ namespace c302
     {
         // Constants:
         const int threshold = 30;
-        const string muscleCc = "MVULVA";
+        static readonly HashSet<string> otherMuscles = new HashSet<string>(new string[] {
+             "MVULVA", "MANAL"
+        });
         static readonly HashSet<string> musclePrefix = new HashSet<string>(new string[] { 
             "MVL", "MDL", "MVR", "MDR" 
         });
@@ -25,6 +27,7 @@ namespace c302
         // Connectome neuron charges
         // node -> [0, 0]
         Dictionary<string, int[]> neuronState;
+        //Dictionary<string, Muscle> muscleState;
 
         // Neuron synapses & their firing weigths
         // node -> (node, weight)
@@ -38,13 +41,20 @@ namespace c302
         {
             this.syn = syn;
             Reset();
-        }        
+        }
 
         public void Activate(string neuron)
         {
-            // accumulate charge (at dendrite) towards neurons that are connected:
-            foreach ((string neuronTo, int weight) in syn[neuron])
-                neuronState[neuronTo][nextState] += weight;
+            if (syn.TryGetValue(neuron, out var nNeurons))
+            {
+                // accumulate charge (at dendrite) towards neurons that are connected:
+                foreach ((string neuronTo, int weight) in nNeurons)
+                    neuronState[neuronTo][nextState] += weight;
+            }
+            else
+            {
+                Debug.LogError($"[Connectome] Neuron not found: {neuron}");
+            }
         }
 
         public void Fire(string neuron)
@@ -111,7 +121,7 @@ namespace c302
                     yield return new Muscle() {
                         MuscleName = m,
                         MuscleId = i,
-                        Quadrant = (CEMuscleQuadrant) Enum.Parse(typeof(CEMuscleQuadrant), m),
+                        Quadrant = (CEMuscleQuadrant) Enum.Parse(typeof(CEMuscleQuadrant), prefix),
                         // @todo: later: HEAD | NECK | BODY 
 
                         CurrentCharge = neuronState[m][currState],
@@ -142,7 +152,7 @@ namespace c302
 
         public static bool IsMuscle(string node)
         {
-            return node.Length > 2 && musclePrefix.Contains(node.Substring(0, 3)) || node.Equals(muscleCc);
+            return node.Length > 2 && musclePrefix.Contains(node.Substring(0, 3)) || otherMuscles.Contains(node);
         }
 
         private static int abs(int charge)
@@ -157,6 +167,7 @@ namespace c302
         {
             // reset:
             var emptyState = new Dictionary<string, int[]>();
+            //var muscleState = new Dictionary<string, Muscle>();
             _synCount = 0;
             currState = 0;
             nextState = 1;
@@ -179,6 +190,8 @@ namespace c302
                         _synCount++;
                 }
             }
+
+            // fill muscles up
 
             // replace & GC
             neuronState?.Clear();
