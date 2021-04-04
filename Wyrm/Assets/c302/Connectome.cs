@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 
 namespace c302
@@ -12,8 +13,8 @@ namespace c302
             "MVL", "MDL", "MVR", "MDR" 
         });
 
-        const int minMuscleId = 7;
-        const int maxMuscleId = 23;
+        public const int minMuscleId = 7;
+        public const int maxMuscleId = 23;
 
 
         int currState = 0;
@@ -31,6 +32,7 @@ namespace c302
 
         public int Count => neuronState.Count;
         public int SynCount => _synCount;
+        //public static IEnumerable<string> muscleSets => musclePrefix;
 
         public Connectome(Dictionary<string, List<(string, int)>> syn)
         {
@@ -80,13 +82,56 @@ namespace c302
                 st[currState] = st[nextState];
         }
 
-        public IEnumerable<(string, int)> GetMuscles(bool currentState = true)
+        public Muscle GetMuscle(string m)
+        {
+            if (neuronState.TryGetValue(m, out int[] state))
+            {
+                return new Muscle()
+                {
+                    MuscleName = m,
+                    MuscleId = int.Parse(m.Substring(3,2)),
+                    Quadrant = (CEMuscleQuadrant)Enum.Parse(typeof(CEMuscleQuadrant), m.Substring(0,3)),
+
+                    CurrentCharge = state[currState],
+                    NextCharge = state[nextState],
+                };
+            }
+            else
+                return null;
+        }
+
+
+        public IEnumerable<Muscle> GetMuscleCharges()
         {
             foreach (string prefix in musclePrefix)
                 for (int i = minMuscleId; i < maxMuscleId; i++)
                 {
-                    var muscle = prefix + i.ToString("00");
-                    yield return (muscle, neuronState[muscle][currentState ? currState : nextState]);
+                    var m = prefix + i.ToString("00");
+
+                    yield return new Muscle() {
+                        MuscleName = m,
+                        MuscleId = i,
+                        Quadrant = (CEMuscleQuadrant) Enum.Parse(typeof(CEMuscleQuadrant), m),
+                        // @todo: later: HEAD | NECK | BODY 
+
+                        CurrentCharge = neuronState[m][currState],
+                        NextCharge = neuronState[m][nextState],
+                    };
+                }
+        }
+
+        public static IEnumerable<Muscle> GetMuscles()
+        {
+            foreach (string prefix in musclePrefix)
+                for (int i = minMuscleId; i < maxMuscleId; i++)
+                {
+                    var m = prefix + i.ToString("00");
+
+                    yield return new Muscle()
+                    {
+                        MuscleName = m,
+                        Quadrant = (CEMuscleQuadrant)Enum.Parse(typeof(CEMuscleQuadrant), prefix),
+                    };
                 }
         }
 

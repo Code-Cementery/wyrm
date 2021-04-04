@@ -8,9 +8,8 @@ public class ConnectomeInstaller : MonoBehaviour
     public CElegans worm;
 
 
-    void Start()
+    void Awake()
     {
-
         using (var s = new SynapseWeightReader())
         {
             var conn = s.ReadSynapses(m_ConnectomeFile);
