@@ -7,6 +7,8 @@ public class CElegans : MonoBehaviour
     public Connectome conn;
     public bool debug = true;
 
+    [Tooltip("~neuron firing interval")]
+    public float simulationStepInterval = 0.03f;
 
     void Awake()
     {
@@ -64,7 +66,7 @@ public class CElegans : MonoBehaviour
      */
     internal void DendriteStimuli(string name, StimuliType type, float value, float dist)
     {
-        Debug.Log($"Dendrite stimuli: {name} {type} {dist}");
+        //Debug.Log($"Dendrite stimuli: {name} {type} {dist}");
 
         conn.Activate(name);
     }
@@ -103,19 +105,19 @@ public class CElegans : MonoBehaviour
     //}
 
 
+    float timePassed = 0;
 
     void FixedUpdate()
     {
-        // @todo: stimulate senses
+        timePassed += Time.fixedDeltaTime;
 
-        conn.RunSimulation();
+        if (timePassed >= simulationStepInterval)
+        {
+            timePassed = 0f;
 
-        // @todo: motor simulation
-        //SendMessage("__Simulation", conn, SendMessageOptions.DontRequireReceiver);
-
-        // @todo: display motor color?
-
-        conn.StepSimulation();
+            conn.RunSimulation();
+            conn.StepSimulation();
+        }
     }
 
     private void LateUpdate()
