@@ -3,6 +3,7 @@ from collections import  defaultdict
 
 """
     filters redundant neuron connections
+    from lego weight dataset
 """
 
 connectome = defaultdict(int)
