@@ -11,12 +11,13 @@ namespace c302
         static readonly HashSet<string> otherMuscles = new HashSet<string>(new string[] {
              "MVULVA", "MANAL"
         });
+
         static readonly HashSet<string> musclePrefix = new HashSet<string>(new string[] { 
             "MVL", "MDL", "MVR", "MDR" 
         });
 
-        public const int minMuscleId = 7;
-        public const int maxMuscleId = 23;
+        public const int minMuscleId = 1;
+        public const int maxMuscleId = 24;
 
 
         int currState = 0;
@@ -26,14 +27,14 @@ namespace c302
 
         // Connectome neuron charges
         // node -> [0, 0]
-        Dictionary<string, int[]> neuronState;
-        //Dictionary<string, Muscle> muscleState;
+        Dictionary<string, int[]> m_NeuronState;
+        Dictionary<string, int> m_MuscleState;
 
         // Neuron synapses & their firing weigths
         // node -> (node, weight)
         private Dictionary<string, List<(string, int)>> syn;
 
-        public int Count => neuronState.Count;
+        public int Count => syn.Count;
         public int SynCount => _synCount;
         //public static IEnumerable<string> muscleSets => musclePrefix;
 
@@ -47,9 +48,15 @@ namespace c302
         {
             if (syn.TryGetValue(neuron, out var nNeurons))
             {
-                // accumulate charge (at dendrite) towards neurons that are connected:
+                // accumulate charge (at dendrite or muscle) towards neurons that are connected:
                 foreach ((string neuronTo, int weight) in nNeurons)
-                    neuronState[neuronTo][nextState] += weight;
+                {
+# if UNITY_EDITOR
+                    if (!m_NeuronState.ContainsKey(neuronTo))
+                        Debug.Log("!!!" + neuronTo);
+# endif
+                    m_NeuronState[neuronTo][nextState] += weight;
+                }
             }
             else
             {
@@ -65,18 +72,14 @@ namespace c302
 
             Activate(neuron);
 
-            //discharge
-            neuronState[neuron][nextState] = 0;
-        }
-
-        public void FireSense(string sense)
-        {
-            // not implemented!
+            // discharge neuron
+            m_NeuronState[neuron][nextState] = 0;
         }
 
         public void RunSimulation()
         {
-            foreach (var kvp in neuronState)
+            // 1. activate neurons
+            foreach (var kvp in m_NeuronState)
             {
                 string neuron = kvp.Key;
                 int charge = kvp.Value[currState];
@@ -84,75 +87,89 @@ namespace c302
                 if (abs(charge) > threshold)
                     Fire(neuron);
             }
-        }
 
-        public void StepSimulation()
-        {
-            foreach (var st in neuronState.Values)
-                st[currState] = st[nextState];
-        }
-
-        public Muscle GetMuscle(string m)
-        {
-            if (neuronState.TryGetValue(m, out int[] state))
+            // 2. motor control
+            foreach (var kvp in m_NeuronState)
             {
-                return new Muscle()
+                if (IsMuscle(kvp.Key))
                 {
-                    MuscleName = m,
-                    MuscleId = int.Parse(m.Substring(3,2)),
-                    Quadrant = (CEMuscleQuadrant)Enum.Parse(typeof(CEMuscleQuadrant), m.Substring(0,3)),
+                    int charge = kvp.Value[nextState];
+                    //if (charge > 0)
+                    //    Debug.Log(kvp.Key + " " + charge);
 
-                    CurrentCharge = state[currState],
-                    NextCharge = state[nextState],
+                    m_MuscleState[kvp.Key] = charge;
+
+                    // discharge muscle
+                    kvp.Value[nextState] = 0;
+                }
+
+                // 3. step state
+                kvp.Value[currState] = kvp.Value[nextState];
+            }
+
+            // 3. reserve unused state for next state (var swap)
+            var _s = currState;
+            currState = nextState;
+            nextState = _s;
+        }
+
+        public IEnumerable<(string, int)> GetMuscleStates(bool showNextState = false)
+        {
+            foreach (var m in GetMuscleDescriptors())
+                yield return (m.MuscleName, m_MuscleState[m.MuscleName]);
+        }
+
+        public static IEnumerable<MuscleDescriptor> GetMuscleDescriptors()
+        {
+            foreach (string prefix in musclePrefix)
+                for (int i = minMuscleId; i <= maxMuscleId; i++)
+                {
+                    var m = prefix + i.ToString("00");
+                    var muscle = new MuscleDescriptor() { MuscleName = m };
+
+                    //if (otherMuscles.Contains(muscle.MuscleName))
+                    //{
+                    //    muscle.MuscleId = 1;
+                    //    muscle.Quadrant = CEMuscleQuadrant.NONE;
+                    //}
+                    //else
+                    //{
+                        muscle.MuscleId = i;
+                        muscle.Quadrant = (CEMuscleQuadrant)Enum.Parse(typeof(CEMuscleQuadrant), prefix);
+                    //}
+
+                    yield return muscle;
+                }
+
+            foreach (var m in otherMuscles) {
+                yield return new MuscleDescriptor() {
+                    MuscleName = m,
+                    MuscleId = 1,
+                    Quadrant = CEMuscleQuadrant.NONE
                 };
             }
-            else
-                return null;
-        }
-
-
-        public IEnumerable<Muscle> GetMuscleCharges()
-        {
-            foreach (string prefix in musclePrefix)
-                for (int i = minMuscleId; i < maxMuscleId; i++)
-                {
-                    var m = prefix + i.ToString("00");
-
-                    yield return new Muscle() {
-                        MuscleName = m,
-                        MuscleId = i,
-                        Quadrant = (CEMuscleQuadrant) Enum.Parse(typeof(CEMuscleQuadrant), prefix),
-                        // @todo: later: HEAD | NECK | BODY 
-
-                        CurrentCharge = neuronState[m][currState],
-                        NextCharge = neuronState[m][nextState],
-                    };
-                }
-        }
-
-        public static IEnumerable<Muscle> GetMuscles()
-        {
-            foreach (string prefix in musclePrefix)
-                for (int i = minMuscleId; i < maxMuscleId; i++)
-                {
-                    var m = prefix + i.ToString("00");
-
-                    yield return new Muscle()
-                    {
-                        MuscleName = m,
-                        Quadrant = (CEMuscleQuadrant)Enum.Parse(typeof(CEMuscleQuadrant), prefix),
-                    };
-                }
-        }
-
-        public int GetNeuronCharge(string neuron)
-        {
-            return neuronState[neuron][currState];
         }
 
         public static bool IsMuscle(string node)
         {
             return node.Length > 2 && musclePrefix.Contains(node.Substring(0, 3)) || otherMuscles.Contains(node);
+        }
+
+        public IEnumerable<string> GetNeurons()
+        {
+            return syn.Keys;
+        }
+
+        public int GetNeuronState(string neuron)
+        {
+            return m_NeuronState[neuron][currState];
+        }
+
+        public IEnumerable<(string, int)> GetNeuronStates(bool showNextState = false)
+        {
+            foreach(var kvp in m_NeuronState)
+                if (!IsMuscle(kvp.Key))
+                    yield return (kvp.Key, kvp.Value[showNextState ? nextState : currState]);
         }
 
         private static int abs(int charge)
@@ -166,8 +183,8 @@ namespace c302
         public void Reset()
         {
             // reset:
-            var emptyState = new Dictionary<string, int[]>();
-            //var muscleState = new Dictionary<string, Muscle>();
+            var neuronState = new Dictionary<string, int[]>();
+            var muscleState = new Dictionary<string, int>();
             _synCount = 0;
             currState = 0;
             nextState = 1;
@@ -177,13 +194,14 @@ namespace c302
             {
                 // dict default set [0,0] as currState,nextState
                 string neuron = kvp.Key;
-                if (!emptyState.ContainsKey(neuron))
-                    emptyState[neuron] = new int[2] { 0, 0 };
+                if (!neuronState.ContainsKey(neuron))
+                    neuronState[neuron] = new int[2] { 0, 0 };
 
+                // count neurons
                 foreach ((string neuron2, _) in kvp.Value)
                 {
-                    if (!emptyState.ContainsKey(neuron2))
-                        emptyState[neuron2] = new int[2] { 0, 0 };
+                    //if (!neuronState.ContainsKey(neuron2))
+                    //    neuronState[neuron2] = new int[2] { 0, 0 };
 
                     // count only neurons:
                     if (!IsMuscle(neuron2))
@@ -191,12 +209,21 @@ namespace c302
                 }
             }
 
-            // fill muscles up
+            // set up muscle state wrapper dict
+            foreach (var m in GetMuscleDescriptors())
+            {
+                neuronState[m.MuscleName] = new int[2] { 0, 0 };
+                muscleState[m.MuscleName] = 0;
+            }
 
             // replace & GC
-            neuronState?.Clear();
-            neuronState = null;
-            neuronState = emptyState;
+            this.m_NeuronState?.Clear();
+            this.m_NeuronState = null;
+            this.m_NeuronState = neuronState;
+
+            this.m_MuscleState?.Clear();
+            this.m_MuscleState = null;
+            this.m_MuscleState = muscleState;
         }
     }
 }

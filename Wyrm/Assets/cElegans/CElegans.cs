@@ -114,9 +114,7 @@ public class CElegans : MonoBehaviour
         if (timePassed >= simulationStepInterval)
         {
             timePassed = 0f;
-
             conn.RunSimulation();
-            conn.StepSimulation();
         }
     }
 
