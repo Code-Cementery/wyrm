@@ -1,0 +1,103 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ad77a21276d6e840aa30a46a6c921fa, type: 3}
+  m_Name: Endless Runner Main Scene
+  m_EditorClassIdentifier: 
+  Dividers:
+  - Name: Core
+    ID: 0
+    PreSuffix: '- '
+    PreSuffixCount: 3
+    Label: '- - -  Core - - - '
+    BoldFont: 1
+    ItalicFont: 0
+    ColoredFont: 1
+    ColoredBG: 0
+    HasOverrideColor_leftSprite: 0
+    HasOverrideColor_rightSprite: 0
+    FontColor: {r: 0.4528302, g: 0, b: 0, a: 1}
+    BGColor: {r: 0.5372549, g: 0.5372549, b: 0.5372549, a: 0.5647059}
+    OverrideColor_leftSprite: {r: 1, g: 1, b: 1, a: 1}
+    OverrideColor_rightSprite: {r: 1, g: 1, b: 1, a: 1}
+    HasSprite_left: 0
+    HasSprite_right: 0
+    LeftSprite: {fileID: 0}
+    RightSprite: {fileID: 0}
+    LeftScale: 1
+    RightScale: 1
+    foldOut: 1
+  - Name: GUI
+    ID: 0
+    PreSuffix: '- '
+    PreSuffixCount: 3
+    Label: '- - -  GUI - - - '
+    BoldFont: 1
+    ItalicFont: 0
+    ColoredFont: 1
+    ColoredBG: 0
+    HasOverrideColor_leftSprite: 0
+    HasOverrideColor_rightSprite: 0
+    FontColor: {r: 0.7169812, g: 0, b: 0.34388158, a: 1}
+    BGColor: {r: 0.5372549, g: 0.5372549, b: 0.5372549, a: 0.5647059}
+    OverrideColor_leftSprite: {r: 1, g: 1, b: 1, a: 1}
+    OverrideColor_rightSprite: {r: 1, g: 1, b: 1, a: 1}
+    HasSprite_left: 0
+    HasSprite_right: 0
+    LeftSprite: {fileID: 0}
+    RightSprite: {fileID: 0}
+    LeftScale: 1
+    RightScale: 1
+    foldOut: 1
+  - Name: Objects
+    ID: 0
+    PreSuffix: '- '
+    PreSuffixCount: 3
+    Label: '- - -  Objects - - - '
+    BoldFont: 1
+    ItalicFont: 0
+    ColoredFont: 1
+    ColoredBG: 0
+    HasOverrideColor_leftSprite: 0
+    HasOverrideColor_rightSprite: 0
+    FontColor: {r: 0, g: 0.081097685, b: 0.4509804, a: 1}
+    BGColor: {r: 0.5372549, g: 0.5372549, b: 0.5372549, a: 0.5647059}
+    OverrideColor_leftSprite: {r: 1, g: 1, b: 1, a: 1}
+    OverrideColor_rightSprite: {r: 1, g: 1, b: 1, a: 1}
+    HasSprite_left: 0
+    HasSprite_right: 0
+    LeftSprite: {fileID: 0}
+    RightSprite: {fileID: 0}
+    LeftScale: 1
+    RightScale: 1
+    foldOut: 1
+  - Name: Environment
+    ID: 0
+    PreSuffix: '- '
+    PreSuffixCount: 3
+    Label: '- - -  Environment - - - '
+    BoldFont: 1
+    ItalicFont: 0
+    ColoredFont: 1
+    ColoredBG: 0
+    HasOverrideColor_leftSprite: 0
+    HasOverrideColor_rightSprite: 0
+    FontColor: {r: 0.17594542, g: 0.4509804, b: 0, a: 1}
+    BGColor: {r: 0.5372549, g: 0.5372549, b: 0.5372549, a: 0.5647059}
+    OverrideColor_leftSprite: {r: 1, g: 1, b: 1, a: 1}
+    OverrideColor_rightSprite: {r: 1, g: 1, b: 1, a: 1}
+    HasSprite_left: 0
+    HasSprite_right: 0
+    LeftSprite: {fileID: 0}
+    RightSprite: {fileID: 0}
+    LeftScale: 1
+    RightScale: 1
+    foldOut: 1

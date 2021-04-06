@@ -39,9 +39,9 @@ public class CElegansBodyHelper : MonoBehaviour
     /// GameMessage
     private void FixedUpdate()
     {
-        foreach ((string muscle, int charge) in conn.GetMuscleStates())
+        foreach ((MuscleDescriptor muscle, int charge) in conn.GetMuscleStates())
         {
-            if (muscles.TryGetValue(muscle, out var _render))
+            if (muscles.TryGetValue(muscle.MuscleName, out var _render))
             {
                 // Map charge to color
                 var val = Mathf.Clamp(charge, 0, maxMuscleCharge);
@@ -55,7 +55,7 @@ public class CElegansBodyHelper : MonoBehaviour
             }
             else
             {
-                Debug.LogError("[CE Helper] muscle not found: " + muscle);
+                Debug.LogError("[CE Helper] muscle not found: " + muscle.MuscleName);
             }
         }
     }

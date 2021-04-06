@@ -1,13 +1,17 @@
-﻿using System;
+﻿using c302;
+using CESimpleModel;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Assets.cElegans
+namespace cElegans
 {
     public class CElegansNeuronHelper : MonoBehaviour
     {
         public CElegans elegans;
+
+        [Space]
         public GameObject CellPrefab;
 
         [Space]

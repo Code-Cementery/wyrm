@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace Assets.cElegans
+namespace cElegans
 {
     public class DendriteBatch : MonoBehaviour
     {
@@ -44,12 +44,11 @@ namespace Assets.cElegans
         private void FixedUpdate()
         {
             // stimulate all nerves in batch for performance reasons
-            foreach(var stimu in stimuliInRange.Values)
+            foreach (var stimu in stimuliInRange.Values)
             {
-                foreach(var sensor in sensors)
+                foreach (var sensor in sensors)
                 {
                     float dist = (stimu.transform.position - sensor.transform.position).magnitude;
-
                     elegans.DendriteStimuli(sensor.name, stimu.type, stimu.value, dist);
                 }
             }

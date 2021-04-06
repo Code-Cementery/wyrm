@@ -2,7 +2,7 @@
 using c302;
 using System;
 
-public class CElegans : MonoBehaviour
+public class CElegans : MonoBehaviour, ICEControl
 {
     public Connectome conn;
     public bool debug = true;
@@ -64,46 +64,12 @@ public class CElegans : MonoBehaviour
      * Moreover, ASH together with ASJ, AWB and ASK neurons mediate 
      * light avoidance and electrosensory navigation [29,30].
      */
-    internal void DendriteStimuli(string name, StimuliType type, float value, float dist)
+    public void DendriteStimuli(string name, StimuliType type, float value, float dist)
     {
-        //Debug.Log($"Dendrite stimuli: {name} {type} {dist}");
+       // Debug.Log($"Dendrite stimuli: {name} {type} {dist}");
 
         conn.Activate(name);
     }
-
-
-
-
-    //public void SmellFoodBinary()
-    //{
-    //    // @TODO: check these out
-
-    //    conn.Activate("ADFL");
-    //    conn.Activate("ADFR");
-    //    conn.Activate("ASGR");
-    //    conn.Activate("ASGL");
-    //    conn.Activate("ASIL");
-    //    conn.Activate("ASIR");
-    //    conn.Activate("ASJR");
-    //    conn.Activate("ASJL");
-    //}
-
-    //public void NoseBumpBinary()
-    //{
-    //    // @TODO: check these out
-
-    //    conn.Activate("FLPR");
-    //    conn.Activate("FLPL");
-    //    conn.Activate("ASHL");
-    //    conn.Activate("ASHR");
-    //    conn.Activate("IL1VL");
-    //    conn.Activate("IL1VR");
-    //    conn.Activate("OLQDL");
-    //    conn.Activate("OLQDR");
-    //    conn.Activate("OLQVR");
-    //    conn.Activate("OLQVL");
-    //}
-
 
     float timePassed = 0;
 

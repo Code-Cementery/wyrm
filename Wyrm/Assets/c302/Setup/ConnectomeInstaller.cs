@@ -5,7 +5,7 @@ public class ConnectomeInstaller : MonoBehaviour
 {
     public TextAsset m_ConnectomeFile;
 
-    public CElegans worm;
+    public CElegans[] worms;
 
 
     void Awake()
@@ -14,8 +14,11 @@ public class ConnectomeInstaller : MonoBehaviour
         {
             var conn = s.ReadSynapses(m_ConnectomeFile);
 
-            worm.conn = conn;
-            worm.gameObject.SetActive(true);
+            foreach(var worm in worms)
+            {
+                worm.conn = conn;
+                worm.gameObject.SetActive(true);
+            }
 
             //if (conn.Count != 302)
             //    Debug.LogError($"Error! Connectome should have 302 connections, {conn.Count} found.");

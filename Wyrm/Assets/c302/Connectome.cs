@@ -113,10 +113,10 @@ namespace c302
             nextState = _s;
         }
 
-        public IEnumerable<(string, int)> GetMuscleStates(bool showNextState = false)
+        public IEnumerable<(MuscleDescriptor, int)> GetMuscleStates(bool showNextState = false)
         {
             foreach (var m in GetMuscleDescriptors())
-                yield return (m.MuscleName, m_MuscleState[m.MuscleName]);
+                yield return (m, m_MuscleState[m.MuscleName]);
         }
 
         public static IEnumerable<MuscleDescriptor> GetMuscleDescriptors()
