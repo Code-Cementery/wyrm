@@ -1209,7 +1209,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 65379649905666305, guid: d8aa00ac19aa15a41ab6a8e7a239261a, type: 3}
       propertyPath: foodSenseDelay
-      value: 0.01
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 4128708958375201535, guid: d8aa00ac19aa15a41ab6a8e7a239261a, type: 3}
       propertyPath: m_LocalPosition.x

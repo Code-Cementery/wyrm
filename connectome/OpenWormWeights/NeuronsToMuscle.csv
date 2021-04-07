@@ -206,8 +206,8 @@ DD6,MDR22,5,GABA
 DD6,MDR23,5,GABA
 DD6,MDR24,5,GABA
 DVB,MANAL,5,GABA
-HSNL,MVULVA,7,"Serotonin, Acetylcholine"
-HSNR,MVULVA,6,"Serotonin, Acetylcholine"
+HSNL,MVULVA,7,"Serotonin_Acetylcholine"
+HSNR,MVULVA,6,"Serotonin_Acetylcholine"
 IL1DL,MDL01,1,Glutamate
 IL1DL,MDL02,1,Glutamate
 IL1DL,MDL04,2,Glutamate
@@ -234,12 +234,12 @@ PVNR,MVL12,1,Glutamate
 PVNR,MVL13,2,Glutamate
 RID,MDL14,1,GABA
 RID,MDL21,2,GABA
-RIML,MDR05,2,"Acetylcholine, Tyramine"
-RIML,MVR05,2,"Acetylcholine, Tyramine"
-RIMR,MDL05,1,"Acetylcholine, Tyramine"
-RIMR,MDL07,1,"Acetylcholine, Tyramine"
-RIMR,MVL05,1,"Acetylcholine, Tyramine"
-RIMR,MVL07,1,"Acetylcholine, Tyramine"
+RIML,MDR05,2,"Acetylcholine_Tyramine"
+RIML,MVR05,2,"Acetylcholine_Tyramine"
+RIMR,MDL05,1,"Acetylcholine_Tyramine"
+RIMR,MDL07,1,"Acetylcholine_Tyramine"
+RIMR,MVL05,1,"Acetylcholine_Tyramine"
+RIMR,MVL07,1,"Acetylcholine_Tyramine"
 RIVL,MVR05,1,GABA
 RIVL,MVR06,1,GABA
 RIVL,MVR08,2,GABA
@@ -503,12 +503,12 @@ VB11,MVR21,5,Acetylcholine
 VB11,MVR22,5,Acetylcholine
 VB11,MVR23,5,Acetylcholine
 VB11,MVR24,5,Acetylcholine
-VC1,MVULVA,6,"Serotonin, Acetylcholine"
-VC2,MVULVA,10,"Serotonin, Acetylcholine"
-VC3,MVULVA,11,"Serotonin, Acetylcholine"
-VC4,MVULVA,7,"Serotonin, Acetylcholine"
-VC5,MVULVA,2,"Serotonin, Acetylcholine"
-VC6,MVULVA,1,"Serotonin, Acetylcholine"
+VC1,MVULVA,6,"Serotonin_Acetylcholine"
+VC2,MVULVA,10,"Serotonin_Acetylcholine"
+VC3,MVULVA,11,"Serotonin_Acetylcholine"
+VC4,MVULVA,7,"Serotonin_Acetylcholine"
+VC5,MVULVA,2,"Serotonin_Acetylcholine"
+VC6,MVULVA,1,"Serotonin_Acetylcholine"
 VD1,MVL05,3,GABA
 VD1,MVL08,3,GABA
 VD1,MVR05,3,GABA

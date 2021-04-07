@@ -1,6 +1,6 @@
-import csv
+from collections import defaultdict
 import sys
-from collections import  defaultdict
+import readers
 
 """
     filters 3 csv into one (muscle, sensor, neuron syn)
@@ -9,50 +9,19 @@ from collections import  defaultdict
 
 connectome = defaultdict(int)
 
-# 0. get neurotransmitter weights
-# @TODO: ITT: discord?
-
-# {'GapJunction', 'Send'}
-# 1 NT:
-# {'FMRFamide', 'Acetylcholine', 'Dopamine', 'Glutamate', 'Tyramine', 'Serotonin'}
-# 2 NT:
-# {'FMRFamide', 'Acetylcholine', 'Dopamine', 'Generic_GJ', 'Acetylcholine_Tyramine', 'Glutamate', 'Serotonin', 'Serotonin_Acetylcholine', 'Serotonin_Glutamate', 'GABA', 'Octapamine'}
-# 3 NT:
-# {'FMRFamide', '', 'Acetylcholine', 'Dopamine', 'Glutamate', 'Serotonin', 'FRMFemide', 'GABA', 'Serotonin, Acetylcholine', 'Acetylcholine, Tyramine'}
-
 
 # 1. sensory csv
-with open('OpenWormWeights/Sensory.csv') as fh:
-    for row in csv.DictReader(fh):
-        neuron = row['Neuron']
-        _sense = row['Landmark']
-        _type = row['Neurotransmitter']
-
-        # @TODO: ITT: weight by type
+for neuron, sense, neurotrans in readers.ow_iter_sensory('OpenWormWeights/Sensory.csv'):
+    pass
+    # @TODO: ITT: weight by type
 
 # 2. neuron csv
-with open('OpenWormWeights/Connectome.csv') as fh:
-    for row in csv.DictReader(fh):
-        _type = row['Neurotransmitter'] # Generic_GJ | Dopamine | Glutamate | Serotonin | FMRFamide | Acetylcholine
-        _type2 = row['Type'] # GapJunction | Send
-        _nrconn = int(row['Number of Connections'])
-
-        # @TODO: ITT: weight by type
-        weight = _nrconn
-
-        connectome[row['Origin'], row['Target']] = weight
+for (nf, nt), (neurotrans, ntype), (connections, weight) in readers.ow_iter_connectome('OpenWormWeights/Connectome.csv'):
+    connectome[nf, nt] = weight
 
 # 3. muscle connection csv
-with open('OpenWormWeights/NeuronsToMuscle.csv') as fh:
-    for row in csv.DictReader(fh):
-        _type = row['Neurotransmitter']
-        _nrconn = int(row['Number of Connections'])
-
-        # @TODO: ITT: weight by type
-        weight = _nrconn
-
-        connectome[row['Neuron'], row['Muscle']] = weight
-
+for (nf, mt), neurotrans, (connections, weight) in readers.ow_iter_muscle('OpenWormWeights/NeuronsToMuscle.csv'):
+    connectome[nf, mt] = weight
 
 sys.exit()
 
