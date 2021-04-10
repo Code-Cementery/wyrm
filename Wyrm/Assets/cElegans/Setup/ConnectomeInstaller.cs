@@ -1,5 +1,4 @@
-﻿using c302;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class ConnectomeInstaller : MonoBehaviour
 {

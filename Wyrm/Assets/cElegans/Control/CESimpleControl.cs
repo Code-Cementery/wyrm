@@ -1,5 +1,4 @@
-﻿using c302;
-using System;
+﻿using System;
 using UnityEngine;
 
 namespace CESimpleModel

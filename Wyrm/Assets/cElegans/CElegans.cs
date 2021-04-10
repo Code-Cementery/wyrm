@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
-using c302;
 using System;
 
-public class CElegans : MonoBehaviour, ICEControl
+public class CElegans : MonoBehaviour
 {
     public Connectome conn;
     public bool debug = true;

@@ -286,14 +286,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 4713530804899050786}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dfd1f206d6bb1e84ca7b507f76557ee7, type: 3}
+  m_Script: {fileID: 11500000, guid: e770492916d2f3f4285dc4e2cc0016c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vMuscleOffset: 0.5
-  dMuscleOffset: 1.6
-  muscleVerticalOffset: 4.2
-  muscleScale: {x: 1, y: 0.4, z: 0.5}
-  maxMuscleCharge: 10
+  debug: 1
+  simulationStepInterval: 0.03
 --- !u!1 &4713530805088231207
 GameObject:
   m_ObjectHideFlags: 0

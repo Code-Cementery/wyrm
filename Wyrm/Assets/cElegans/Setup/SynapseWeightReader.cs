@@ -6,8 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace c302
-{
     public class SynapseWeightReader : IDisposable
     {
 
@@ -45,4 +43,3 @@ namespace c302
         }
 
     }
-}

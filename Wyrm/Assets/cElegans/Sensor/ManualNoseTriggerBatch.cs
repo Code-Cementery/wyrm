@@ -25,7 +25,7 @@ namespace CESimpleModel
             {
                 switch(stimu.type)
                 {
-                    case StimuliType.Food: foodStimuli = stimu; break;
+                    case StimuliType.GustatoryAttractant: foodStimuli = stimu; break;
                     case StimuliType.Touch: noseStimuli = stimu; break;
                 }
             }
@@ -40,7 +40,7 @@ namespace CESimpleModel
             {
                 switch (stimu.type)
                 {
-                    case StimuliType.Food: foodStimuli = null; break;
+                    case StimuliType.GustatoryAttractant: foodStimuli = null; break;
                     case StimuliType.Touch: noseStimuli = null; break;
                 }
             }
@@ -78,7 +78,7 @@ namespace CESimpleModel
                 float dist = (foodStimuli.transform.position - transform.position).magnitude;
 
                 foreach (var sen in foodSensors)
-                    elegans.DendriteStimuli(sen, StimuliType.Food, foodStimuli.value, dist);
+                    elegans.DendriteStimuli(sen, StimuliType.GustatoryAttractant, foodStimuli.value, dist);
 
                 waiting = true;
                 timePassed = 0;
