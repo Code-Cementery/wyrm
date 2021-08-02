@@ -3,7 +3,7 @@ using UnityEngine;
 
 public enum ChangeType { Higher, Lower, Either }
 public enum ValueType { Fixed, Adaptive, Cultivation }
-public enum ActivationType { OnOff,  }
+public enum ActivationType { OnOff, Frequency }
 
 
 [Serializable]
@@ -40,4 +40,27 @@ public class SensoryNeuron : MonoBehaviour
 
     [Space]
     public Sense[] sensing;
+
+
+    void OnSense(Stimuli stimu)
+    {
+        float dist = (stimu.transform.position - transform.position).magnitude;
+
+        /*
+         sense:
+
+        - filters sense?
+        - condition is triggered?
+        - activation
+
+        update:
+        - activation continous
+         */
+
+        bool isTriggered = IsConditionTriggered(stimu.value, sense);
+
+        if (sense.senseChange == ValueType.Fixed)
+            if (stimu.value > sense.fixedValue)
+    }
 }
+
