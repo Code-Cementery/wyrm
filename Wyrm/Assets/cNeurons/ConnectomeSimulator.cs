@@ -63,7 +63,7 @@ public class ConnectomeSimulator : MonoBehaviour
      * Moreover, ASH together with ASJ, AWB and ASK neurons mediate 
      * light avoidance and electrosensory navigation [29,30].
      */
-    public void DendriteStimuli(string name, StimuliType type, float value, float dist)
+    public void DendriteStimuli(string name)
     {
        // Debug.Log($"Dendrite stimuli: {name} {type} {dist}");
 

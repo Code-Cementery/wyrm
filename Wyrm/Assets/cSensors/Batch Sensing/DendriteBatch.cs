@@ -4,15 +4,15 @@ using UnityEngine;
 public class DendriteBatch : MonoBehaviour
 {
     public ConnectomeSimulator elegans;
-    public StimuliType type;
+    //public StimuliType type;
 
     List<Transform> sensors;
-    Dictionary<int, Stimuli> stimuliInRange;
+    Dictionary<int, StimuliData> stimuliInRange;
 
     private void Awake()
     {
         sensors = new List<Transform>();
-        stimuliInRange = new Dictionary<int, Stimuli>();
+        stimuliInRange = new Dictionary<int, StimuliData>();
 
         // find all attached sensors
         foreach (Transform child in transform)
@@ -25,7 +25,7 @@ public class DendriteBatch : MonoBehaviour
     {
         Debug.Log("Sensing " + other.name);
 
-        if (other.TryGetComponent(out Stimuli stimu))
+        if (other.TryGetComponent(out StimuliData stimu))
             stimuliInRange[stimu.GetInstanceID()] = stimu;
      
         //switch (LayerMask.LayerToName(other.gameObject.layer))
@@ -35,7 +35,7 @@ public class DendriteBatch : MonoBehaviour
     {
         Debug.Log("No longer sensing " + other.name);
 
-        if (other.TryGetComponent(out Stimuli stimu))
+        if (other.TryGetComponent(out StimuliData stimu))
             stimuliInRange.Remove(stimu.GetInstanceID());
     }
 
@@ -47,7 +47,7 @@ public class DendriteBatch : MonoBehaviour
             foreach (var sensor in sensors)
             {
                 float dist = (stimu.transform.position - sensor.transform.position).magnitude;
-                elegans.DendriteStimuli(sensor.name, stimu.type, stimu.value, dist);
+                elegans.DendriteStimuli(sensor.name/*, stimu.type, stimu.value, dist*/);
             }
         }
     }

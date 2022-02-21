@@ -13,20 +13,20 @@ namespace CESimpleModel
         public string[] noseSensors;
 
 
-        Stimuli foodStimuli;
-        Stimuli noseStimuli;
+        StimuliData foodStimuli;
+        StimuliData noseStimuli;
 
 
         private void OnTriggerEnter(Collider other)
         {
             Debug.Log("Sensing " + other.name);
 
-            if (other.TryGetComponent(out Stimuli stimu))
+            if (other.TryGetComponent(out StimuliData stimu))
             {
                 switch(stimu.type)
                 {
-                    case StimuliType.GustatoryAttractant: foodStimuli = stimu; break;
-                    case StimuliType.Touch: noseStimuli = stimu; break;
+                    //case StimuliType.GustatoryAttractant: foodStimuli = stimu; break;
+                    //case StimuliType.Touch: noseStimuli = stimu; break;
                 }
             }
 
@@ -36,12 +36,12 @@ namespace CESimpleModel
         {
             Debug.Log("No longer sensing " + other.name);
 
-            if (other.TryGetComponent(out Stimuli stimu))
+            if (other.TryGetComponent(out StimuliData stimu))
             {
                 switch (stimu.type)
                 {
-                    case StimuliType.GustatoryAttractant: foodStimuli = null; break;
-                    case StimuliType.Touch: noseStimuli = null; break;
+                    //case StimuliType.GustatoryAttractant: foodStimuli = null; break;
+                    //case StimuliType.Touch: noseStimuli = null; break;
                 }
             }
         }
@@ -71,14 +71,14 @@ namespace CESimpleModel
                 float dist = (noseStimuli.transform.position - transform.position).magnitude;
 
                 foreach (var sen in noseSensors)
-                    elegans.DendriteStimuli(sen, StimuliType.Touch, noseStimuli.value, dist);
+                    elegans.DendriteStimuli(sen/*, StimuliType.Touch, noseStimuli.value, dist*/);
             }
             else if (foodStimuli != null)
             {
                 float dist = (foodStimuli.transform.position - transform.position).magnitude;
 
                 foreach (var sen in foodSensors)
-                    elegans.DendriteStimuli(sen, StimuliType.GustatoryAttractant, foodStimuli.value, dist);
+                    elegans.DendriteStimuli(sen/*, StimuliType.GustatoryAttractant, foodStimuli.value, dist*/);
 
                 waiting = true;
                 timePassed = 0;

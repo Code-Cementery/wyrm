@@ -27,6 +27,7 @@ public class Connectome
     // node -> [0, 0]
     Dictionary<string, int[]> m_NeuronState;
     Dictionary<string, int> m_MuscleState;
+    Dictionary<string, float> m_DendriteFrequencies;
 
     // Neuron synapses & their firing weigths
     // node -> (node, weight)
@@ -74,9 +75,17 @@ public class Connectome
         m_NeuronState[neuron][nextState] = 0;
     }
 
+    public void SetSensoryNeuronActivationFrequency(string neuron, float frequency)
+    {
+        m_DendriteFrequencies[neuron] = frequency;
+    }
+
     public void RunSimulation()
     {
-        // 1. activate neurons
+        // 1. activate dendrites
+        //foreach()
+
+        // 2. activate neurons
         foreach (var kvp in m_NeuronState)
         {
             string neuron = kvp.Key;
@@ -86,7 +95,7 @@ public class Connectome
                 Fire(neuron);
         }
 
-        // 2. motor control
+        // 3. motor control
         foreach (var kvp in m_NeuronState)
         {
             if (IsMuscle(kvp.Key))
@@ -101,11 +110,11 @@ public class Connectome
                 kvp.Value[nextState] = 0;
             }
 
-            // 3. step state
+            // 4. step state
             kvp.Value[currState] = kvp.Value[nextState];
         }
 
-        // 3. reserve unused state for next state (var swap)
+        // 4. reserve unused state for next state (var swap)
         var _s = currState;
         currState = nextState;
         nextState = _s;
@@ -222,5 +231,9 @@ public class Connectome
         this.m_MuscleState?.Clear();
         this.m_MuscleState = null;
         this.m_MuscleState = muscleState;
+
+        this.m_DendriteFrequencies?.Clear();
+        this.m_DendriteFrequencies = null;
+        m_DendriteFrequencies = new Dictionary<string, float>();
     }
 }

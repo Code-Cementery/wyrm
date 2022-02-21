@@ -10,8 +10,7 @@ public enum ReceptorType
     Thermo,
     Noci,
     Electro,
-
     Chemo,
-    ChemoPheromone,
-    ChemoOdor
+
+    Other
 }

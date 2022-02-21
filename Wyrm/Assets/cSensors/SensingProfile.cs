@@ -5,8 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class SensingProfile : ScriptableObject
+public abstract class SensingProfile : ScriptableObject
 {
 
-    public int kfsdfd;
+
+
+    /// <summary>
+    /// </summary>
+    /// <returns>Activation interval [ms]</returns>
+    public abstract float OnActivationInterval(float valueDiff);
+
 }

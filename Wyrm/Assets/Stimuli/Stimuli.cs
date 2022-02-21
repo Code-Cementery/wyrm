@@ -1,19 +1,64 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Text;
+using UnityEngine;
 
-public class Stimuli : MonoBehaviour
+
+[Serializable]
+public enum RepuType
 {
-    public StimuliType type;
+    None,
+    Repellent,
+    Attractant,
+}
 
-    public float value;
+[Serializable]
+public enum ChemoType
+{
+    None,
+    Gustatory,
+    Olfactory,
+    Pheromone,
+    Other,
+}
 
-    private void Awake()
+public class Stimuli : ScriptableObject
+{
+    public string Name => name;
+
+    public ReceptorType receptorType = ReceptorType.Chemo;
+
+    public ChemoType chemoType = ChemoType.None;
+
+    public RepuType attractDirection = RepuType.None;
+
+    public override string ToString()
     {
-        Setup();
-    }
+        var sb = new StringBuilder();
+        sb.Append(Name);
+        sb.Append(' ');
 
-    [ContextMenu("Setup Color")]
-    void Setup()
-    {
-        // @TODO: set mat color
+
+        if (receptorType == ReceptorType.Chemo && chemoType != ChemoType.None)
+        {
+            sb.Append('(');
+            sb.Append(chemoType);
+        }
+        else if (receptorType != ReceptorType.Other)
+        {
+            sb.Append('(');
+            sb.Append(receptorType);
+        }
+        else 
+            return sb.ToString();
+
+        if (attractDirection != RepuType.None)
+        {
+            sb.Append(' ');
+            sb.Append(attractDirection);
+        }
+
+        sb.Append(')');
+
+        return sb.ToString();
     }
 }
